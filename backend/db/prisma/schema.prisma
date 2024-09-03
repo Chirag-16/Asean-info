@@ -16,8 +16,11 @@ datasource db {
 model Resource {
   id                String @id @default(uuid())
   carrier           String @unique
+  queue             String
   active            Int
+  avgage            String @default("null")
   lastRun           String
+  duration          String @default("null")
   success           String
   rnf               String
   fail              String

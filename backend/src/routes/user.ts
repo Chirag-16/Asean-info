@@ -19,5 +19,32 @@ userRouter.get("/data", async(req, res) => {
     }
 })
 
+userRouter.post("/find", async (req, res) => {
+    const { carrier, queue, startTime, endTime} = req.body;
+
+    if(!queue || !startTime || !endTime) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try{
+        const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+
+    const filteredCareers = carrier.filter((c : any) => 
+        c.queue === queue &&
+        new Date(c.startTime) <= endDate &&
+        new Date(c.endTime) >= startDate
+      );
+    
+      res.json(filteredCareers);
+    
+       }catch(err) {
+        return res.status(404).json({
+            message: "Not Found"
+        })
+
+}
+    
+})
 
 export default userRouter;

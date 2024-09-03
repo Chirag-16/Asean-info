@@ -24,4 +24,23 @@ userRouter.get("/data", (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
 }));
+userRouter.post("/find", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { carrier, queue, startTime, endTime } = req.body;
+    if (!queue || !startTime || !endTime) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    try {
+        const startDate = new Date(startTime);
+        const endDate = new Date(endTime);
+        const filteredCareers = carrier.filter((c) => c.queue === queue &&
+            new Date(c.startTime) <= endDate &&
+            new Date(c.endTime) >= startDate);
+        res.json(filteredCareers);
+    }
+    catch (err) {
+        return res.status(404).json({
+            message: "Not Found"
+        });
+    }
+}));
 exports.default = userRouter;
